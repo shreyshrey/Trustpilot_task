@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  sentiment-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./model_output:/app/model_output
+    container_name: sentiment-app
+    restart: always

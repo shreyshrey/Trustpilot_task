@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+model_output/
+Books_10k.jsonl
+venv/
