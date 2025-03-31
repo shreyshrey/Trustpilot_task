@@ -1,4 +1,5 @@
-### Prerequisties
+
+## Prerequisties
 
 Before procceeding, make sure you have the following installed:
 
@@ -30,7 +31,7 @@ docker-compose --version
 
   
 
-### 🐳 Run with Docker compose
+## 🐳 Run with Docker compose
 This will build and run the API, using the command
 
 ```
@@ -54,7 +55,7 @@ The swagger UI should look like as follows:
 3. See the response body showing the sentiment of the text.
 ![](https://github.com/shreyshrey/Trustpilot_task/blob/master/swagger3.png?raw=true)
 
-### Stop Docker compose
+## Stop Docker compose
 
 ```
 
