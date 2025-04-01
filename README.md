@@ -10,17 +10,13 @@ Before procceeding, make sure you have the following installed:
 - Verify Docker installation
 
 ```
-
 docker --version
-
 ```
 
 - Verify Docker compose installtion
 
 ```
-
 docker-compose --version
-
 ```
 
   
@@ -35,9 +31,7 @@ docker-compose --version
 This will build and run the API, using the command
 
 ```
-
 docker-compose up --build -d
-
 ```
 
 The API is running at:
@@ -62,7 +56,7 @@ The swagger UI should look like as follows:
 #### Run load test
 Make sure docker compose command and then paste the following command:
 ```
-hey -n 1000 -c 50 -m POST -H "Content-TypeL application/json" -d '{"text": "This book was very informative nad enjoyable"}' http://127.0.0.1:800/predict/
+hey -n 1000 -c 50 -m POST -H "Content-Type: application/json" -d '{"text": "This book was very informative and enjoyable."}' http://127.0.0.1:8000/predict/
 ```
 This will give the:
 - Send 1000 POST requests with 50 concurrent users.
