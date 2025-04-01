@@ -55,6 +55,19 @@ The swagger UI should look like as follows:
 3. See the response body showing the sentiment of the text.
 ![](https://github.com/shreyshrey/Trustpilot_task/blob/master/swagger3.png?raw=true)
 
+
+### To check the p99 latency for model predictions
+``` pip install hey ``` or ```brew install hey```
+
+#### Run load test
+Make sure docker compose command and then paste the following command:
+```
+hey -n 1000 -c 50 -m POST -H "Content-TypeL application/json" -d '{"text": "This book was very informative nad enjoyable"}' http://127.0.0.1:800/predict/
+```
+This will give the:
+- Send 1000 POST requests with 50 concurrent users.
+- Display detailed latency metrics, including p99.
+
 ## Stop Docker compose
 
 ```
