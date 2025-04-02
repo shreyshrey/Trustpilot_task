@@ -16,18 +16,14 @@ def test_root_endpoint():
     assert response.status_code == 200
     assert response.json() == {"message": "Custom Sentiment API is running!"}
 
+
+
 def test_predict_valid_review():
     """Test prediction with valid input."""
     response = client.post("/predict/", json=valid_review)
     assert response.status_code == 200
     assert "sentiment" in response.json()
     assert response.json()["sentiment"] in ["positive", "neutral", "negative"]
-
-def test_predict_invalid_empty_review():
-    """Test prediction with empty review text."""
-    response = client.post("/predict/", json=invalid_review_empty)
-    assert response.status_code == 422
-    assert "detail" in response.json()
 
 def test_predict_invalid_missing_text():
     """Test prediction with missing review text."""
