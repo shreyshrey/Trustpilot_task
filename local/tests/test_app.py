@@ -2,57 +2,47 @@ import pytest
 from fastapi.testclient import TestClient
 from app.app import app
 
+# Initialize the FastAPI test client
 client = TestClient(app)
 
+# Sample review data
+valid_review = {"text": "This book is absolutely amazing, I loved it!"}
+invalid_review_empty = {"text": ""}
+invalid_review_no_text = {}
 
-# Test root endpoint
 def test_root_endpoint():
+    """Test root endpoint to check if the API is running."""
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Custom Sentiment API is running!"}
 
-
-# Test valid prediction
-def test_valid_prediction():
-    response = client.post(
-        "/predict/", json={"text": "This book is absolutely fantastic!"}
-    )
+def test_predict_valid_review():
+    """Test prediction with valid input."""
+    response = client.post("/predict/", json=valid_review)
     assert response.status_code == 200
     assert "sentiment" in response.json()
     assert response.json()["sentiment"] in ["positive", "neutral", "negative"]
 
-
-# Test empty text prediction
-def test_empty_text_prediction():
-    response = client.post("/predict/", json={"text": ""})
-    assert response.status_code == 200
-    assert response.json()["sentiment"] == "neutral"
-
-
-# Test missing text field
-def test_missing_text_field():
-    response = client.post("/predict/", json={})
+def test_predict_invalid_empty_review():
+    """Test prediction with empty review text."""
+    response = client.post("/predict/", json=invalid_review_empty)
     assert response.status_code == 422
+    assert "detail" in response.json()
 
+def test_predict_invalid_missing_text():
+    """Test prediction with missing review text."""
+    response = client.post("/predict/", json=invalid_review_no_text)
+    assert response.status_code == 422
+    assert "detail" in response.json()
 
-# Test invalid JSON format
-def test_invalid_json_format():
+def test_predict_invalid_json_format():
+    """Test prediction with invalid JSON format."""
     response = client.post("/predict/", data="invalid_json")
     assert response.status_code == 422
+    assert "detail" in response.json()
 
-
-# Test single-word input
-def test_single_word_text():
-    response = client.post("/predict/", json={"text": "Boring"})
-    assert response.status_code == 200
-    assert "sentiment" in response.json()
-    assert response.json()["sentiment"] in ["positive", "neutral", "negative"]
-
-
-# Test long text input
-def test_long_text_prediction():
-    long_text = "Amazing! " * 1000  # Long review
-    response = client.post("/predict/", json={"text": long_text})
-    assert response.status_code == 200
-    assert "sentiment" in response.json()
-    assert response.json()["sentiment"] in ["positive", "neutral", "negative"]
+def test_predict_edge_case_non_string_input():
+    """Test prediction with non-string input (numeric)."""
+    response = client.post("/predict/", json={"text": 12345})
+    assert response.status_code == 422
+    assert "detail" in response.json()

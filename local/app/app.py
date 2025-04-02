@@ -1,11 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import torch
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from model.train_model import SentimentClassifier
 import logging
-
 
 # Setting up logging
 logging.basicConfig(format="%(asctime)s - %(levelname)s - %(message)s", level=logging.INFO)
@@ -13,20 +12,19 @@ logging.basicConfig(format="%(asctime)s - %(levelname)s - %(message)s", level=lo
 # Define the FastAPI app
 app = FastAPI()
 
-MODEL_PATH = "./model_ouput/sentiment_model.pth"
-VECTORIZER_PATH = "./model_ouput/vectorizer.npy"
-# Define label mapping
+MODEL_PATH = "./model_output/sentiment_model.pth"
+VECTORIZER_PATH = "./model_output/vectorizer.npy"
 LABELS = ["negative", "neutral", "positive"]
 
 class ReviewRequest(BaseModel):
-    text: str
+    text: str = Field(..., min_length=1, description="Book review sentiment")
 
 try:
 
     # Load vectorizer and model
     vectorizer = np.load(VECTORIZER_PATH, allow_pickle=True).item()
     input_dim = len(vectorizer.get_feature_names_out())
-    model = SentimentClassifier(input_dim)
+    model = SentimentClassifier(input_dim, output_dim=3)
     model.load_state_dict(torch.load(MODEL_PATH))
     model.eval()
     logging.info("Model loaded successfully!")
