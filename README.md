@@ -74,7 +74,7 @@ docker-compose stop
 
 ## To run without docker
 
-### Set up virtual environment
+### 🐍 Set up virtual environment
 
 Open terminal and type/copy the following command:
 ``` bash
@@ -86,12 +86,12 @@ source sentiment_env/bin/activate # on Linux/Max
 sentiment_env\Scripts\activate # on windows
 ```
 
-### Install Dependencies
+### 📦 Install Dependencies
 ```bash
 pip install -r requirments.txt
 ```
 
-### Train and save the model
+### 🧠 Train and save the model
 ```bash
 python model/train_model.py
 ```
